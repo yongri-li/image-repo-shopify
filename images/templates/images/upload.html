@@ -1,0 +1,20 @@
+{%extends "images/layout.html"%}
+
+{%block body%}
+
+
+{% if user.is_authenticated %}
+<h1>Upload an Image</h1>
+<form action="" method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Upload">
+</form>
+{% else %}
+
+<h1>Create an account so you can upload some images</h1>
+
+{% endif %}
+
+
+{% endblock %}

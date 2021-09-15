@@ -2,19 +2,16 @@
 
 {%block body%}
 
+<ul>
+    {% for image in images %}
+    <div>
+        <h2>{{ image.title }}</h2>
+        <img src="{{ image.image.url }}" alt="{{image.image.title}}">
+        <h5> by {{image.author}} </h5>
+    </div>
+    {% endfor %}
+</ul>
 
-{% if user.is_authenticated %}
-<h1>Upload an Image</h1>
-<form action="" method="POST">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Upload">
-</form>
-{% else %}
-
-<h1>Create an account so you can upload some images</h1>
-
-{% endif %}
 
 
 {% endblock %}

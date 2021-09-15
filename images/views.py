@@ -4,7 +4,7 @@ from django import forms
 from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
-from .models import User
+from .models import User, Image
 # Create your views here.
 
 class LoginForm(forms.Form):
@@ -19,16 +19,29 @@ class RegisterForm(forms.Form):
 
 class ImageUploadForm(forms.Form):
     title = forms.CharField()
-    image = forms.FileField()
+    image = forms.ImageField()
+
+
 
 
 def index(request):
+    images = Image.objects.all()
+    return render(request,"images/index.html",{
+        "images":images
+    })
+
+def upload_view(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        form = ImageUploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            theImage = Image(title=form.cleaned_data["title"],image=form.cleaned_data["image"],author=request.user)
+            theImage.save()
     if request.user.is_authenticated:
-        return render(request,"images/index.html",{
+        return render(request,"images/upload.html",{
             "form": ImageUploadForm()
         })
-
-    return render(request,"images/index.html")
+    else:
+        return render(request,"images/upload.html")
 
 def login_view(request):
 
