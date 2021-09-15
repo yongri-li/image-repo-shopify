@@ -1,5 +1,13 @@
 {%extends "images/layout.html"%}
 
 {%block body%}
-Hello this is from this index
+
+
+    {% if user.is_authenticated %}
+        <h1>Upload an Image</h1>
+    {% else %}
+
+    {% endif %}
+
+
 {% endblock %}
