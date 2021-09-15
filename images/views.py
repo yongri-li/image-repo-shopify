@@ -17,8 +17,17 @@ class RegisterForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
     password_confirm = forms.CharField(widget=forms.PasswordInput())
 
+class ImageUploadForm(forms.Form):
+    title = forms.CharField()
+    image = forms.FileField()
+
 
 def index(request):
+    if request.user.is_authenticated:
+        return render(request,"images/index.html",{
+            "form": ImageUploadForm()
+        })
+
     return render(request,"images/index.html")
 
 def login_view(request):
