@@ -43,6 +43,19 @@ def upload_view(request):
     else:
         return render(request,"images/upload.html")
 
+def bulk_upload_view(request):
+    if request.method == "POST" and request.user.is_authenticated:
+        imageList = request.FILES.getlist('images')
+
+        for image in imageList:
+            newImage = Image(title=image,image=image,author=request.user)
+            newImage.save()
+
+
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request,"images/bulk_upload.html")
+
 def login_view(request):
 
     if(request.method == "POST"):

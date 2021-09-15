@@ -4,16 +4,17 @@
 
 
 {% if user.is_authenticated %}
-    <h1>Upload an Image</h1>
+    <h1>Upload Images</h1>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Upload">
+        <div>
+            <input required name="images" type="file" multiple>
+        </div>
+        <div style="padding-top: 20px;">
+            <input type="submit" value="Upload">
+        </div>
+        
     </form>
-    <div style="padding-top: 20px;">
-        <a href="{% url 'bulk-upload' %}">Upload in bulk</a>
-    </div>
-    
 {% else %}
 
 <h1>Create an account so you can upload some images</h1>
