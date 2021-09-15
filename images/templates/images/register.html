@@ -1,13 +1,11 @@
-{% extends "images/layout.html" %}
-
-{% block body %}
+{% extends "images/layout.html" %} {% block body %}
 <h1>Register</h1>
-<form action="{url 'register'}" method="POST">
-    {% csrf_token %}
-    {{form}}
-    <div>
-        <input type="submit" value="Register">
-    </div>
-
+<form action="{%url 'register'%}" method="POST">
+  {% csrf_token %} {{form}}
+  <div>
+    <input type="submit" value="Register" />
+  </div>
 </form>
+
+<p>{{ message }}</p>
 {% endblock %}

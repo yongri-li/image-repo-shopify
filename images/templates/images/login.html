@@ -1,12 +1,10 @@
-{% extends "images/layout.html" %}
-
-{% block body %}
+{% extends "images/layout.html" %} {% block body %}
 <h1>Log In</h1>
 <form action="{%url 'login'%}" method="POST">
-    {% csrf_token %}
-    {{form}}
-    <div>
-        <input type="submit" value="Log In">
-    </div>
+  {% csrf_token %} {{form}}
+  <div>
+    <input type="submit" value="Log In" />
+  </div>
 </form>
+<p>{{ message }}</p>
 {% endblock %}
