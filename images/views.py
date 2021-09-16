@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Image
+import os
 # Create your views here.
 
 class LoginForm(forms.Form):
@@ -20,6 +21,7 @@ class RegisterForm(forms.Form):
 class ImageUploadForm(forms.Form):
     title = forms.CharField()
     image = forms.ImageField()
+    private = forms.BooleanField()
 
 
 
@@ -34,7 +36,7 @@ def upload_view(request):
     if request.method == "POST" and request.user.is_authenticated:
         form = ImageUploadForm(request.POST,request.FILES)
         if form.is_valid():
-            theImage = Image(title=form.cleaned_data["title"],image=form.cleaned_data["image"],author=request.user)
+            theImage = Image(title=form.cleaned_data["title"],image=form.cleaned_data["image"],author=request.user,private=form.cleaned_data["private"])
             theImage.save()
     if request.user.is_authenticated:
         return render(request,"images/upload.html",{
@@ -46,10 +48,21 @@ def upload_view(request):
 def bulk_upload_view(request):
     if request.method == "POST" and request.user.is_authenticated:
         imageList = request.FILES.getlist('images')
-
+        data = request.POST
+        
+        private = data.get('private',False) == "on"
         for image in imageList:
-            newImage = Image(title=image,image=image,author=request.user)
-            newImage.save()
+            #print()
+            if len(Image.objects.filter(title=image)) == 0:
+                theTitle = ""
+                for c in str(image):
+                    if(c == "."):
+                        break
+                    theTitle = theTitle + c
+                newImage = Image(title=theTitle,image=image,author=request.user,private=private)
+                newImage.save()
+            else:
+                print(f"{image} is already in database")
 
 
         return HttpResponseRedirect(reverse("index"))

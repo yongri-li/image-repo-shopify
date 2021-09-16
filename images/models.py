@@ -13,6 +13,7 @@ class Image(models.Model):
     image = models.ImageField(upload_to='images')
     author = models.ForeignKey(User,on_delete=CASCADE,default=None,null=True,blank=True)
     timestamp = models.DateTimeField(auto_now_add=True,null=True,blank=True)
+    private = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.title}"
