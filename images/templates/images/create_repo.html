@@ -1,0 +1,39 @@
+{%extends "images/layout.html"%}
+
+{%block body%}
+
+
+{% if user.is_authenticated %}
+    <h1>Create a Repo of Images</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div style="padding-top: 20px;">
+            Title: <input name="title" type="text">
+        </div>
+
+        <div style="padding-top: 20px;">
+            <p>Description</p>
+            <textarea name="des" id="des" cols="30" rows="10"></textarea>
+        </div>
+
+        <div style="padding-top: 20px;">
+            <input required name="images" type="file" multiple>
+        </div>
+
+        <div style="padding-top: 20px;">
+            Private: <input name="private" type="checkbox">
+        </div>
+
+        <div style="padding-top: 20px;">
+            <input type="submit" value="Create">
+        </div>
+    </form>
+{% else %}
+
+<h1>Create an account so you can upload some images</h1>
+
+{% endif %}
+
+
+{% endblock %}

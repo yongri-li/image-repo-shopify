@@ -1,3 +1,4 @@
+from images.models import Image
 from django.urls import path
 from . import views
 
@@ -11,6 +12,8 @@ urlpatterns = [
     path('register/',views.register_view,name="register"),
     path('upload/',views.upload_view,name="upload"),
     path('bulk-upload/',views.bulk_upload_view,name="bulk-upload"),
+    path('images/<str:level>',views.images,name="images"),
+    path('create',views.create_view,name="create"),
     path('test/',views.test,name="test")
 ]
 

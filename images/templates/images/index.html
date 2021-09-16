@@ -1,17 +1,32 @@
 {%extends "images/layout.html"%}
+{% load static %}
+
+{%block script %}
+<script src="{% static 'images/home.js' %}"></script>
+{%endblock%}
 
 {%block body%}
 
-<ul>
+    <div id="image-list">
+
+    </div>
+    <!--
     {% for image in images %}
-    <div>
+    <div style="border-style: groove; padding: 20px; margin: 20px;">
         <h2>{{ image.title }}</h2>
-        <img src="{{ image.image.url }}" alt="{{image.image.title}}">
+        <img src="{{ image.image.url }}" alt="{{image.image.title}}" height="200">
         <h5> private: {{ image.private }}</h5>
         <h5> by {{image.author}} on {{image.timestamp}}</h5>
+
+        <form action="{% url 'test' %}">
+            <button type=submit>Detail View</button>
+        </form>
+        
     </div>
     {% endfor %}
-</ul>
+    -->
+    
+
 
 
 
