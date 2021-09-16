@@ -15,13 +15,14 @@ class Repo(models.Model):
     author = models.ForeignKey(User,on_delete=CASCADE,default=None,null=True,blank=True)
     private = models.BooleanField(default=False)
     description = models.CharField(max_length=255)
-    thumbnail = models.ImageField(upload_to="images",default=None)
+    thumbnail = models.ImageField(upload_to="images",default=None,null=True,blank=True)
 
     def __str__(self):
         return f"{self.title}"
 
     def serialize(self):
         return {
+            "id":self.pk,
             "title":self.title,
             "timestamp":self.timestamp,
             "author":self.author.username,
@@ -44,6 +45,7 @@ class Image(models.Model):
 
     def serialize(self):
         return {
+            "id":self.pk,
             "title":self.title,
             "image":self.image.url,
             "author":self.author.username,

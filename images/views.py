@@ -63,7 +63,7 @@ def create_view(request):
         repoTitle = repoData["title"]
         repoDes = repoData["des"]
         repoPrivate = repoData.get('private',False) == "on"
-        newRepo = Repo(title=repoTitle,description=repoDes,private=repoPrivate,author=request.user)
+        newRepo = Repo(thumbnail=request.FILES.get("thumbnail"),title=repoTitle,description=repoDes,private=repoPrivate,author=request.user)
         newRepo.save()
         print(f"You just made a new Repo {newRepo}")
         #get list of images
@@ -77,11 +77,17 @@ def create_view(request):
         
         print("HELLo")
 
-
-
-    
-
     return HttpResponseRedirect(reverse("index"))
+
+def repo_detail_view(request,pk):
+    theRepo = Repo.objects.get(id=pk)
+    print(theRepo)
+    repoImages = Image.objects.filter(repo=theRepo)
+    print(repoImages)
+    return render(request,"images/repo_detail.html",{
+        "repo":theRepo,
+        "images":repoImages
+    })
 
 
 def bulk_upload_view(request):

@@ -14,6 +14,7 @@ urlpatterns = [
     path('bulk-upload/',views.bulk_upload_view,name="bulk-upload"),
     path('images/<str:level>',views.images,name="images"),
     path('create',views.create_view,name="create"),
+    path('detail/<int:pk>',views.repo_detail_view,name="detail"),
     path('test/',views.test,name="test")
 ]
 
