@@ -15,6 +15,7 @@ urlpatterns = [
     path('images/<str:level>',views.images,name="images"),
     path('create',views.create_view,name="create"),
     path('detail/<int:pk>',views.repo_detail_view,name="detail"),
+    path('repo_details/<int:pk>',views.get_repo_details,name="detail_json"),
     path('test/',views.test,name="test")
 ]
 

@@ -24,24 +24,7 @@ class ImageUploadForm(forms.Form):
     private = forms.BooleanField()
 
 
-def images(request,level):
-    
-    if level == "private":
-        repos = Repo.objects.filter(
-            author = request.user,private=True
-        )
-    elif level == "public":
-        repos = Repo.objects.filter(
-            private=False
-        )
-    elif level == "both":
-        repos = Repo.objects.all()
 
-    ans = []
-    for repo in repos:
-        ans.append(repo.serialize())
-
-    return JsonResponse(ans,safe=False)
     
 
 
@@ -81,14 +64,44 @@ def create_view(request):
 
 def repo_detail_view(request,pk):
     theRepo = Repo.objects.get(id=pk)
-    print(theRepo)
-    repoImages = Image.objects.filter(repo=theRepo)
-    print(repoImages)
-    return render(request,"images/repo_detail.html",{
-        "repo":theRepo,
-        "images":repoImages
-    })
+    #print(theRepo)
+    #repoImages = Image.objects.filter(repo=theRepo)
+    #print(repoImages)
+    if theRepo.private == False or request.user == theRepo.author:
+        return render(request,"images/repo_detail.html")
+    else:
+        return HttpResponseRedirect(reverse("index"))
 
+def get_repo_details(request,pk):
+    theRepo = Repo.objects.get(id=pk)
+    if theRepo.private == True and theRepo.author != request.user:
+        return JsonResponse({"error": "This repo is private"},status=400)
+
+
+    repoImages = Image.objects.filter(repo=theRepo)
+    ans = []
+    for image in repoImages:
+        ans.append(image.serialize())
+    return JsonResponse({"repo":theRepo.serialize(),"images":ans},safe=False)
+
+def images(request,level):
+    
+    if level == "private":
+        repos = Repo.objects.filter(
+            author = request.user,private=True
+        )
+    elif level == "public":
+        repos = Repo.objects.filter(
+            private=False
+        )
+    elif level == "both":
+        repos = Repo.objects.all()
+
+    ans = []
+    for repo in repos:
+        ans.append(repo.serialize())
+
+    return JsonResponse(ans,safe=False)
 
 def bulk_upload_view(request):
     if request.method == "POST" and request.user.is_authenticated:

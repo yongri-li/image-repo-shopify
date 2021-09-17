@@ -2,7 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     //GET a list of images
-    const repoList = document.querySelector('#image-list')
+    const repoList = document.querySelector('#repo-list')
 
     fetch(`/images/private`)
     .then(response => response.json())
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             newContent.append(des)
             newContent.addEventListener('click', () => {
                 console.log(`YOU JUST CLICKED ${repos[i].title} with the id of ${repos[i].id}`)
-                window.location.href = `http://127.0.0.1:8000/detail/${repos[i].id}`;
+                window.location.href = `/detail/${repos[i].id}`;
             })
 
 

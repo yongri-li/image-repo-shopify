@@ -1,0 +1,18 @@
+
+
+{% extends "images/layout.html" %}
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+
+{% block body %}
+    <h1>{{ image.title }}</h1>
+    <h5>by {{ image.author }} on {{ image.timestamp }} in the {{ image.repo }} repo</h5>
+    
+    <h2>{{ image.title }}</h2>
+    <img src="{{ image.image.url }}" alt="{{image.image.title}}" height="200">
+    
+
+{% endblock %}

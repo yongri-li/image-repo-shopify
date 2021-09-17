@@ -1,12 +1,24 @@
 {% extends "images/layout.html" %}
 {% load static %}
 
+{% block script %}
+<script src="{% static 'images/detail.js' %}"></script>
+{% endblock %}
 
 
 {% block body %}
+
+    <div id="image-list">
+
+    </div>
+    <!--
+    <h1>{{ repo.title }}</h1>
+    <h5>by {{ repo.author }} on {{ repo.timestamp }} </h5>
     {% for image in images %}
         <h2>{{ image.title }}</h2>
         <img src="{{ image.image.url }}" alt="{{image.image.title}}" height="200">
     {% endfor %}
+    -->
+    
 
 {% endblock %}
