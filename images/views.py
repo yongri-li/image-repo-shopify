@@ -79,10 +79,18 @@ def get_repo_details(request,pk):
 
 
     repoImages = Image.objects.filter(repo=theRepo)
-    ans = []
+    ans = {}
     for image in repoImages:
-        ans.append(image.serialize())
+        ser = image.serialize()
+        ans[ser["title"]] = ser
     return JsonResponse({"repo":theRepo.serialize(),"images":ans},safe=False)
+
+def delete_image(request,pk):
+    theImage = Image.objects.get(id=pk)
+    if theImage.author != request.user:
+        return JsonResponse({"error": "This is not your image"},status=400)
+    theImage.delete()
+    return JsonResponse(f"{theImage} was deleted",safe=False)
 
 def images(request,level):
     

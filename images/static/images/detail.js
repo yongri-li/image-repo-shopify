@@ -1,57 +1,96 @@
 
 
-console.log("HELLO")
+//console.log("HELLO")
 document.addEventListener('DOMContentLoaded', function () {
 
     const repo = document.querySelector('#repo-detail')
     const repoID = document.URL.split("/")[document.URL.split("/").length - 1]
-
+    //-----------------------THIS NEEDS TO BE FIXED TO UPLOAD AS WELL--------------------------------------
     fetch(`/repo_details/${repoID}`)
         .then(response => response.json())
         .then(details => {
             console.log(details);
             let title = document.createElement("h2");
             let user = document.createElement("h5");
+
+            let selectOption = document.createElement("select");
+
+            let option0 = document.createElement("option");
+            option0.setAttribute("value","delete")
+            option0.innerText = "Delete"
+            let option1 = document.createElement("option");
+            option1.setAttribute("value","download")
+            option1.innerText = "Download"
+
+            selectOption.append(option0)
+            selectOption.append(option1)
+            
             let selected = document.createElement("button");
-            selected.addEventListener('click', function () {
-                console.log("BUTTON PRESSED");
-                checks = document.querySelectorAll("input");
-                console.log(checks)
-                for (let i = 0; i < checks.length; i++) {
-                    console.log(checks[i])
-                }
-
-            })
 
 
-            selected.innerHTML = `Delete Selected`
+            selected.innerHTML = `Submit`
             user.innerHTML = `created by ${details.repo.author}`;
             title.innerHTML = details.repo.title;
 
             repo.append(title);
             repo.append(user);
+            repo.append(selectOption);
             repo.append(selected);
 
-            for (let i = 0; i < details.images.length; i++) {
+            selected.addEventListener('click', function () {
+                //console.log("BUTTON PRESSED");
+                checks = document.querySelectorAll('input[name="image"]:checked');
+                theOption = document.querySelector("select")
+                console.log(checks)
+                for(let i=0;i<checks.length;i++) {
+                    console.log(`${theOption.value} ${checks[i].id}`)
+                    fetch(`/delete-image/${details.images[checks[i].id].id}`)
+                    .then(response => response.json())
+                    .then(ans => {
+                        if(i==checks.length-1) {
+                            location.reload();
+                        }
+                    })
+                }
+                
+
+            })
+
+
+            imageArray = Object.values(details.images)
+
+            for (let i = 0; i < imageArray.length; i++) {
 
 
                 let newContent = document.createElement("div");
-                newContent.style.borderStyle = "groove"
-                newContent.style.margin = "10px"
+                newContent.style.borderStyle = "groove";
+                newContent.style.margin = "10px";
 
-                let check = document.createElement("input")
-                check.setAttribute("type", "checkbox")
+                let label = document.createElement("label");
+                label.setAttribute("for",imageArray[i].title);
+
+                let check = document.createElement("input");
+                check.setAttribute("type", "checkbox");
+                check.setAttribute("id",imageArray[i].title);
+                //check.setAttribute("value","yes");
+                check.setAttribute("name","image");
+
+                label.append(check);
+                //label.append(details.images[i].title);
+                
+
 
                 let title = document.createElement("h3");
-                title.innerHTML = details.images[i].title
+                title.innerHTML = imageArray[i].title;
 
                 let newImage = document.createElement("img");
-                newImage.setAttribute("src", details.images[i].image);
+                newImage.setAttribute("src", imageArray[i].image);
                 newImage.setAttribute("height", "100");
 
 
                 newContent.append(title);
-                newContent.append(check);
+                //newContent.append(check);
+                newContent.append(label)
                 newContent.append(newImage);
 
                 repo.append(newContent);
