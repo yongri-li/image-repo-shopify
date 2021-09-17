@@ -15,6 +15,11 @@ document.addEventListener('DOMContentLoaded', function () {
             let selected = document.createElement("button");
             selected.addEventListener('click', function () {
                 console.log("BUTTON PRESSED");
+                checks = document.querySelectorAll("input");
+                console.log(checks)
+                for (let i = 0; i < checks.length; i++) {
+                    console.log(checks[i])
+                }
 
             })
 
