@@ -16,15 +16,16 @@ document.addEventListener('DOMContentLoaded', function () {
             let selectOption = document.createElement("select");
 
             let option0 = document.createElement("option");
-            option0.setAttribute("value","delete")
+            option0.setAttribute("value", "delete")
             option0.innerText = "Delete"
+
             let option1 = document.createElement("option");
-            option1.setAttribute("value","download")
+            option1.setAttribute("value", "download")
             option1.innerText = "Download"
 
             selectOption.append(option0)
             selectOption.append(option1)
-            
+
             let selected = document.createElement("button");
 
 
@@ -38,29 +39,40 @@ document.addEventListener('DOMContentLoaded', function () {
             repo.append(selected);
 
             selected.addEventListener('click', function () {
-                
+
                 checks = document.querySelectorAll('input[name="image"]:checked');
                 theOption = document.querySelector("select")
-                
-                
+
+
                 //if(theOption)
-                
-                if(theOption.value == "delete") {
-                    for(let i=0;i<checks.length;i++) {
+
+                if (theOption.value == "delete") {
+                    for (let i = 0; i < checks.length; i++) {
                         fetch(`/delete-image/${details.images[checks[i].id].id}`)
-                        .then(response => response.json())
-                        .then(ans => {
-                            if(i==checks.length-1) {
-                                location.reload();
-                            }
-                        })
+                            .then(response => response.json())
+                            .then(ans => {
+                                if (i == checks.length - 1) {
+                                    location.reload();
+                                }
+                            })
                     }
                 }
-                else if (theOption.value == "download"){
-                    console.log("it was a download")
+                else if (theOption.value == "download") {
+                    for (let i = 0; i < checks.length; i++) {
+
+
+                        let element = document.createElement("a");
+                        element.setAttribute('href', details.images[checks[i].id].image);
+                        element.setAttribute("download", "download")
+
+                        element.click()
+                    }
+
+
+
                 }
-                
-                
+
+
 
             })
 
@@ -75,17 +87,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 newContent.style.margin = "10px";
 
                 let label = document.createElement("label");
-                label.setAttribute("for",imageArray[i].title);
+                label.setAttribute("for", imageArray[i].title);
 
                 let check = document.createElement("input");
                 check.setAttribute("type", "checkbox");
-                check.setAttribute("id",imageArray[i].title);
+                check.setAttribute("id", imageArray[i].title);
                 //check.setAttribute("value","yes");
-                check.setAttribute("name","image");
+                check.setAttribute("name", "image");
 
                 label.append(check);
                 //label.append(details.images[i].title);
-                
+
 
 
                 let title = document.createElement("h3");
