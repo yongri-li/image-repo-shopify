@@ -29,11 +29,10 @@ class ImageUploadForm(forms.Form):
 
 
 def index(request):
-    #images = Image.objects.all()
-    return render(request,"images/index.html")#,{
-    #    "images":images
-    #})
-
+    return render(request,"images/index.html")
+    
+#def add_image(request,pk):
+#    return JsonResponse("Image added",safe=False)
 
 def create_view(request):
     #create a repo with a list of images
@@ -48,25 +47,18 @@ def create_view(request):
         repoPrivate = repoData.get('private',False) == "on"
         newRepo = Repo(thumbnail=request.FILES.get("thumbnail"),title=repoTitle,description=repoDes,private=repoPrivate,author=request.user)
         newRepo.save()
-        #print(f"You just made a new Repo {newRepo}")
-        #get list of images
+        
         repoImages = request.FILES.getlist('images')
         for image in repoImages:
             imTitle = str(image).split(".")[0]
             newImage = Image(title=imTitle,image=image,repo=newRepo,author=request.user,private=repoPrivate)
             newImage.save()
 
-        #make Image objects
-        
-        #print("HELLo")
-
     return HttpResponseRedirect(reverse("index"))
 
 def repo_detail_view(request,pk):
     theRepo = Repo.objects.get(id=pk)
-    #print(theRepo)
-    #repoImages = Image.objects.filter(repo=theRepo)
-    #print(repoImages)
+    
     if theRepo.private == False or request.user == theRepo.author:
         return render(request,"images/repo_detail.html")
     else:
@@ -136,7 +128,7 @@ def bulk_upload_view(request):
     else:
         return render(request,"images/bulk_upload.html")
 
-def upload_view(request):
+def upload_view(request,pk):
     if request.method == "POST" and request.user.is_authenticated:
         form = ImageUploadForm(request.POST,request.FILES)
         if form.is_valid():

@@ -10,6 +10,13 @@ document.addEventListener('DOMContentLoaded', function () {
             let title = document.createElement("h2");
             let user = document.createElement("h5");
 
+            let addImage = document.createElement("button");
+            addImage.innerHTML = "Add Image"
+            addImage.addEventListener("click", function () {
+                console.log("add image")
+                window.location.href = `/upload/${repoID}`
+            })
+
             let selectAll = document.createElement("button");
             selectAll.innerHTML = "Select All"
             selectAll.addEventListener("click", function () {
@@ -54,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
             repo.append(selected);
             repo.append(selectAll);
             repo.append(unSelectAll);
+            repo.append(addImage);
 
             selected.addEventListener('click', function () {
 
