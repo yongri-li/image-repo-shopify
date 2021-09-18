@@ -22,6 +22,9 @@ class ImageUploadForm(forms.Form):
     title = forms.CharField()
     image = forms.ImageField()
 
+class ImageEditForm(forms.Form):
+    title = forms.CharField()
+
 
 def index(request):
     return render(request,"images/index.html")
@@ -83,6 +86,24 @@ def delete_repo(request,pk):
         return HttpResponseRedirect(reverse("index"))
     else:
         return JsonResponse({"error": "This is not your repo"},status=400)
+
+def edit_image(request,pk):
+    theImage = Image.objects.get(id=pk)
+    if(theImage.author == request.user and request.method == "GET"):
+        return render(request,"images/image_edit.html", {
+            "image":theImage,
+            "form":ImageEditForm()
+        })
+    elif(theImage.author == request.user and request.method == "POST"):
+        imageEdit = ImageEditForm(request.POST)
+        if(imageEdit.is_valid()):
+
+            theImage.title = imageEdit.cleaned_data["title"]
+            theImage.save()
+        return HttpResponseRedirect(reverse("detail",kwargs={'pk':theImage.repo.id}))
+    else:
+       return JsonResponse({"error": "This is not your image"},status=400)
+
 
 def images(request,level):
     

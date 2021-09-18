@@ -8,11 +8,16 @@
 
 
 {% block body %}
-    <h1>{{ image.title }}</h1>
+    <h2>{{ image.title }}</h2>
     <h5>by {{ image.author }} on {{ image.timestamp }} in the {{ image.repo }} repo</h5>
     
-    <h2>{{ image.title }}</h2>
     <img src="{{ image.image.url }}" alt="{{image.image.title}}" height="200">
+
+    <form action="{%url 'edit_image' image.id%}" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit">
+    </form>
     
 
 {% endblock %}

@@ -135,10 +135,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 newImage.setAttribute("src", imageArray[i].image);
                 newImage.setAttribute("height", "100");
 
+                let editButton = document.createElement("button");
+                editButton.innerHTML = "Edit"
+                editButton.addEventListener("click",function() {
+                    console.log("Hello")
+                    window.location.href = `/edit-image/${imageArray[i].id}`
+                })
 
                 newContent.append(title);
                 newContent.append(label)
                 newContent.append(newImage);
+                if(details.user == details.repo.author) {
+                    newContent.append(editButton);
+                }
+                
 
                 repo.append(newContent);
             }
