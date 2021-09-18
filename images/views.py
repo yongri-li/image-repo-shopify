@@ -21,7 +21,6 @@ class RegisterForm(forms.Form):
 class ImageUploadForm(forms.Form):
     title = forms.CharField()
     image = forms.ImageField()
-    private = forms.BooleanField()
 
 
 
@@ -104,42 +103,50 @@ def images(request,level):
 
     return JsonResponse(ans,safe=False)
 
-def bulk_upload_view(request):
-    if request.method == "POST" and request.user.is_authenticated:
+def bulk_upload_view(request,pk):
+    theRepo = Repo.objects.get(id=pk)
+    if request.method == "POST" and request.user.is_authenticated and request.user == theRepo.author:
         imageList = request.FILES.getlist('images')
         data = request.POST
         
-        private = data.get('private',False) == "on"
+        #private = data.get('private',False) == "on"
         for image in imageList:
-            #print()
             if len(Image.objects.filter(title=image)) == 0:
                 theTitle = ""
                 for c in str(image):
                     if(c == "."):
                         break
                     theTitle = theTitle + c
-                newImage = Image(title=theTitle,image=image,author=request.user,private=private)
+                newImage = Image(repo=theRepo,title=theTitle,image=image,author=request.user,private=theRepo.private)
                 newImage.save()
             else:
                 print(f"{image} is already in database")
 
 
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        return render(request,"images/bulk_upload.html")
-
-def upload_view(request,pk):
-    if request.method == "POST" and request.user.is_authenticated:
-        form = ImageUploadForm(request.POST,request.FILES)
-        if form.is_valid():
-            theImage = Image(title=form.cleaned_data["title"],image=form.cleaned_data["image"],author=request.user,private=form.cleaned_data["private"])
-            theImage.save()
-    if request.user.is_authenticated:
-        return render(request,"images/upload.html",{
-            "form": ImageUploadForm()
+        return HttpResponseRedirect(reverse("detail",kwargs={'pk':pk}))
+    elif request.user.is_authenticated and theRepo.author == request.user:
+        return render(request,"images/bulk_upload.html",{
+            "repo":theRepo
         })
     else:
-        return render(request,"images/upload.html")
+        return JsonResponse({"error":"This is not your Repo"},status=400)
+
+def upload_view(request,pk):
+    theRepo = Repo.objects.get(id=pk)
+    
+    if request.method == "POST" and request.user.is_authenticated and theRepo.author == request.user:
+        form = ImageUploadForm(request.POST,request.FILES)
+        if form.is_valid():
+            theImage = Image(repo=theRepo,title=form.cleaned_data["title"],image=form.cleaned_data["image"],author=request.user,private=theRepo.private)
+            theImage.save()
+            return HttpResponseRedirect(reverse("detail",kwargs={'pk':pk}))
+    elif request.user.is_authenticated and theRepo.author == request.user:
+        return render(request,"images/upload.html",{
+            "form": ImageUploadForm(),
+            "repo":theRepo
+        })
+    else:
+        return JsonResponse({"error":"This is not your Repo"},status=400)
 
 
 

@@ -4,14 +4,14 @@
 
 
 {% if user.is_authenticated %}
-    <h1>Upload an Image</h1>
+    <h2>Upload an Image to {{repo.title}}</h2>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Upload">
     </form>
     <div style="padding-top: 20px;">
-        <a href="{% url 'bulk-upload' %}">Upload in bulk</a>
+        <a href="{% url 'bulk-upload' repo.id%}">Upload in bulk</a>
     </div>
     
 {% else %}

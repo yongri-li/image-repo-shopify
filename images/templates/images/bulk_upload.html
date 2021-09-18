@@ -4,7 +4,7 @@
 
 
 {% if user.is_authenticated %}
-    <h1>Upload Images</h1>
+    <h2>Upload Images to {{repo.title}}</h2>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div>
