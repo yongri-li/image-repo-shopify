@@ -23,16 +23,9 @@ class ImageUploadForm(forms.Form):
     image = forms.ImageField()
 
 
-
-    
-
-
 def index(request):
     return render(request,"images/index.html")
     
-#def add_image(request,pk):
-#    return JsonResponse("Image added",safe=False)
-
 def create_view(request):
     #create a repo with a list of images
     if(request.method == "GET"):
@@ -74,7 +67,7 @@ def get_repo_details(request,pk):
     for image in repoImages:
         ser = image.serialize()
         ans[ser["title"]] = ser
-    return JsonResponse({"repo":theRepo.serialize(),"images":ans},safe=False)
+    return JsonResponse({"repo":theRepo.serialize(),"images":ans,"user":f"{request.user}"},safe=False)
 
 def delete_image(request,pk):
     theImage = Image.objects.get(id=pk)
@@ -83,6 +76,13 @@ def delete_image(request,pk):
     theImage.delete()
     return JsonResponse(f"{theImage} was deleted",safe=False)
 
+def delete_repo(request,pk):
+    theRepo = Repo.objects.get(id=pk)
+    if(theRepo.author == request.user):
+        theRepo.delete()
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return JsonResponse({"error": "This is not your repo"},status=400)
 
 def images(request,level):
     
@@ -94,9 +94,7 @@ def images(request,level):
         repos = Repo.objects.filter(
             private=False
         )
-    elif level == "both":
-        repos = Repo.objects.all()
-
+    repos = repos.order_by("-timestamp").all()
     ans = []
     for repo in repos:
         ans.append(repo.serialize())
@@ -205,5 +203,3 @@ def register_view(request):
             "form":RegisterForm()
         })
 
-def test(request):
-    return HttpResponse("Hello This is the Test View")

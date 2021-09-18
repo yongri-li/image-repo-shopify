@@ -3,12 +3,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const repo = document.querySelector('#repo-detail')
     const repoID = document.URL.split("/")[document.URL.split("/").length - 1]
+    
     fetch(`/repo_details/${repoID}`)
         .then(response => response.json())
         .then(details => {
             console.log(details);
             let title = document.createElement("h2");
             let user = document.createElement("h5");
+
+            
 
             let addImage = document.createElement("button");
             addImage.innerHTML = "Add Image"
@@ -39,14 +42,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             let option0 = document.createElement("option");
             option0.setAttribute("value", "delete");
-            option0.innerText = "Delete";
+            option0.innerText = "Delete Selected";
 
             let option1 = document.createElement("option");
             option1.setAttribute("value", "download");
-            option1.innerText = "Download";
+            option1.innerText = "Download Selected";
 
-            selectOption.append(option0);
             selectOption.append(option1);
+            selectOption.append(option0);
 
             let selected = document.createElement("button");
 
@@ -61,7 +64,17 @@ document.addEventListener('DOMContentLoaded', function () {
             repo.append(selected);
             repo.append(selectAll);
             repo.append(unSelectAll);
-            repo.append(addImage);
+            
+            if(details.user == details.repo.author) {
+                let deleteButton = document.createElement("button")
+                deleteButton.innerText = "Delete Repo"
+                deleteButton.addEventListener("click", function(){
+                    window.location.href = `/delete-repo/${repoID}`
+                })
+                repo.append(addImage);
+                repo.append(deleteButton)
+            }
+            
 
             selected.addEventListener('click', function () {
 
