@@ -38,20 +38,28 @@ document.addEventListener('DOMContentLoaded', function () {
             repo.append(selected);
 
             selected.addEventListener('click', function () {
-                //console.log("BUTTON PRESSED");
+                
                 checks = document.querySelectorAll('input[name="image"]:checked');
                 theOption = document.querySelector("select")
-                console.log(checks)
-                for(let i=0;i<checks.length;i++) {
-                    console.log(`${theOption.value} ${checks[i].id}`)
-                    fetch(`/delete-image/${details.images[checks[i].id].id}`)
-                    .then(response => response.json())
-                    .then(ans => {
-                        if(i==checks.length-1) {
-                            location.reload();
-                        }
-                    })
+                
+                
+                //if(theOption)
+                
+                if(theOption.value == "delete") {
+                    for(let i=0;i<checks.length;i++) {
+                        fetch(`/delete-image/${details.images[checks[i].id].id}`)
+                        .then(response => response.json())
+                        .then(ans => {
+                            if(i==checks.length-1) {
+                                location.reload();
+                            }
+                        })
+                    }
                 }
+                else if (theOption.value == "download"){
+                    console.log("it was a download")
+                }
+                
                 
 
             })

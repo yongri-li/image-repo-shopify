@@ -24,7 +24,7 @@ class Repo(models.Model):
         return {
             "id":self.pk,
             "title":self.title,
-            "timestamp":self.timestamp,
+            "timestamp":self.timestamp.strftime("%b %d %Y, %I:%M %p"),
             "author":self.author.username,
             "private":self.private,
             "description":self.description,
@@ -49,6 +49,6 @@ class Image(models.Model):
             "title":self.title,
             "image":self.image.url,
             "author":self.author.username,
-            "timestamp":self.timestamp,
+            "timestamp":self.timestamp.strftime("%b %d %Y, %I:%M %p"),
             "private":self.private
         }

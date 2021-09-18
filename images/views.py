@@ -48,7 +48,7 @@ def create_view(request):
         repoPrivate = repoData.get('private',False) == "on"
         newRepo = Repo(thumbnail=request.FILES.get("thumbnail"),title=repoTitle,description=repoDes,private=repoPrivate,author=request.user)
         newRepo.save()
-        print(f"You just made a new Repo {newRepo}")
+        #print(f"You just made a new Repo {newRepo}")
         #get list of images
         repoImages = request.FILES.getlist('images')
         for image in repoImages:
@@ -58,7 +58,7 @@ def create_view(request):
 
         #make Image objects
         
-        print("HELLo")
+        #print("HELLo")
 
     return HttpResponseRedirect(reverse("index"))
 
@@ -91,6 +91,7 @@ def delete_image(request,pk):
         return JsonResponse({"error": "This is not your image"},status=400)
     theImage.delete()
     return JsonResponse(f"{theImage} was deleted",safe=False)
+
 
 def images(request,level):
     

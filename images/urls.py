@@ -17,6 +17,7 @@ urlpatterns = [
     path('detail/<int:pk>',views.repo_detail_view,name="detail"),
     path('repo_details/<int:pk>',views.get_repo_details,name="detail_json"),
     path('delete-image/<int:pk>',views.delete_image,name="delete_image"),
+    #path('download-image/<int:pk>',views.download_image,name="download_image"),
     path('test/',views.test,name="test")
 ]
 
