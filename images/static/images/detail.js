@@ -1,11 +1,8 @@
 
-
-//console.log("HELLO")
 document.addEventListener('DOMContentLoaded', function () {
 
     const repo = document.querySelector('#repo-detail')
     const repoID = document.URL.split("/")[document.URL.split("/").length - 1]
-    //-----------------------THIS NEEDS TO BE FIXED TO UPLOAD AS WELL--------------------------------------
     fetch(`/repo_details/${repoID}`)
         .then(response => response.json())
         .then(details => {
@@ -13,38 +10,55 @@ document.addEventListener('DOMContentLoaded', function () {
             let title = document.createElement("h2");
             let user = document.createElement("h5");
 
+            let selectAll = document.createElement("button");
+            selectAll.innerHTML = "Select All"
+            selectAll.addEventListener("click", function () {
+                checks = document.querySelectorAll('input[name="image"]');
+                for (let i = 0; i < checks.length; i++) {
+                    checks[i].checked = true
+                }
+            })
+
+            let unSelectAll = document.createElement("button");
+            unSelectAll.innerHTML = "Unselect All"
+            unSelectAll.addEventListener("click", function () {
+                checks = document.querySelectorAll('input[name="image"]');
+                for (let i = 0; i < checks.length; i++) {
+                    checks[i].checked = false
+                }
+            })
+
             let selectOption = document.createElement("select");
 
             let option0 = document.createElement("option");
-            option0.setAttribute("value", "delete")
-            option0.innerText = "Delete"
+            option0.setAttribute("value", "delete");
+            option0.innerText = "Delete";
 
             let option1 = document.createElement("option");
-            option1.setAttribute("value", "download")
-            option1.innerText = "Download"
+            option1.setAttribute("value", "download");
+            option1.innerText = "Download";
 
-            selectOption.append(option0)
-            selectOption.append(option1)
+            selectOption.append(option0);
+            selectOption.append(option1);
 
             let selected = document.createElement("button");
 
 
             selected.innerHTML = `Submit`
-            user.innerHTML = `created by ${details.repo.author}`;
+            user.innerHTML = `created by ${details.repo.author} on ${details.repo.timestamp}`;
             title.innerHTML = details.repo.title;
 
             repo.append(title);
             repo.append(user);
             repo.append(selectOption);
             repo.append(selected);
+            repo.append(selectAll);
+            repo.append(unSelectAll);
 
             selected.addEventListener('click', function () {
 
                 checks = document.querySelectorAll('input[name="image"]:checked');
                 theOption = document.querySelector("select")
-
-
-                //if(theOption)
 
                 if (theOption.value == "delete") {
                     for (let i = 0; i < checks.length; i++) {
@@ -68,15 +82,9 @@ document.addEventListener('DOMContentLoaded', function () {
                         element.click()
                     }
 
-
-
                 }
 
-
-
             })
-
-
             imageArray = Object.values(details.images)
 
             for (let i = 0; i < imageArray.length; i++) {
@@ -92,11 +100,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 let check = document.createElement("input");
                 check.setAttribute("type", "checkbox");
                 check.setAttribute("id", imageArray[i].title);
-                //check.setAttribute("value","yes");
                 check.setAttribute("name", "image");
 
                 label.append(check);
-                //label.append(details.images[i].title);
+
 
 
 
@@ -109,20 +116,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                 newContent.append(title);
-                //newContent.append(check);
                 newContent.append(label)
                 newContent.append(newImage);
 
                 repo.append(newContent);
             }
 
-
-
-
         })
-
-    //console.log("HEHLDFDF")
-    //fetch(`/detail/${repoID}`)
-
-
 })
