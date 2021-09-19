@@ -3,13 +3,13 @@
 {%block body%}
 
 
-{% if user.is_authenticated %}
+{% if user.is_authenticated and user == repo.author%}
     <h2>Upload Images to {{repo.title}}</h2>
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <div >
-            <input class="form-control" required name="images" type="file" multiple>
-        </div>
+        
+        <input class="form-control" required name="images" type="file" multiple>
+        
         
         <input class="btn btn-primary" style="margin-top:10px" type="submit" value="Upload">
         

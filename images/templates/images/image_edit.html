@@ -8,15 +8,18 @@
 
 
 {% block body %}
-    <h2>{{ image.title }}</h2>
-    <h5>by {{ image.author }} on {{ image.timestamp }} in the {{ image.repo }} repo</h5>
+    <h2>{{ image.repo }}</h2>
+    <div class="card" style="margin:20px;">
+        <img src="{{ image.image.url }}" alt="{{image.image.title}}" height="200">
+        <h4>{{ image.title }}</h4>
+        <h6>by {{ image.author }} on {{ image.timestamp }}</h6>
+    </div>
     
-    <img src="{{ image.image.url }}" alt="{{image.image.title}}" height="200">
 
-    <form action="{%url 'edit_image' image.id%}" method="POST">
+    <form action="{%url 'edit_image' image.id%}" method="POST" style="margin: 20px;">
         {% csrf_token %}
         {{form.as_p}}
-        <input type="submit">
+        <input class="btn btn-primary" type="submit">
     </form>
     
 

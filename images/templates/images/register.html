@@ -2,9 +2,9 @@
 <h1>Register</h1>
 <form action="{%url 'register'%}" method="POST">
     {% csrf_token %} {{form.as_p}}
-    <div>
-        <input type="submit" value="Register" />
-    </div>
+    
+    <input class="btn btn-primary" type="submit" value="Register" />
+    
 </form>
 
 <p>{{ message }}</p>

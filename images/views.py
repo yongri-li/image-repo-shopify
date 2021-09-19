@@ -9,21 +9,21 @@ import os
 # Create your views here.
 
 class LoginForm(forms.Form):
-    username = forms.CharField()
-    password = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
 class RegisterForm(forms.Form):
-    username = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
-    password_confirm = forms.CharField(widget=forms.PasswordInput())
+    username = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
+    password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
 
 class ImageUploadForm(forms.Form):
-    title = forms.CharField()
-    image = forms.ImageField()
+    title = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+    image = forms.ImageField(widget=forms.ClearableFileInput(attrs={'class':'form-control'}))
 
 class ImageEditForm(forms.Form):
-    title = forms.CharField()
+    title = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
 
 
 def index(request):

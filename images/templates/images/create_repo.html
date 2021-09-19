@@ -8,29 +8,29 @@
     <form action="" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <div style="padding-top: 20px;">
-            Title: <input name="title" type="text">
+        <div style="padding-top: 20px;"></div>
+            Title: <input class="form-control" name="title" type="text">
         </div>
 
         <div style="padding-top: 20px;">
             <p>Description</p>
-            <textarea name="des" id="des" cols="30" rows="10"></textarea>
+            <textarea class="form-control" name="des" id="des" cols="30" rows="10"></textarea>
         </div>
 
         <div style="padding-top: 20px;">
-            Thumbnail: <input required name="thumbnail" type="file">
+            Thumbnail: <input class="form-control" required name="thumbnail" type="file">
         </div>
 
         <div style="padding-top: 20px;">
-            Photos: <input required name="images" type="file" multiple>
+            Photos: <input class="form-control" required name="images" type="file" multiple>
+        </div>
+
+        <div style="padding-top: 20px;" class="form-check form-switch">
+            <input class="form-check-input" name="private" type="checkbox"> Private
         </div>
 
         <div style="padding-top: 20px;">
-            Private: <input name="private" type="checkbox">
-        </div>
-
-        <div style="padding-top: 20px;">
-            <input type="submit" value="Create">
+            <input class="btn btn-primary" type="submit" value="Create">
         </div>
     </form>
 {% else %}

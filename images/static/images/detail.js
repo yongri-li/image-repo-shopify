@@ -55,7 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
             option1.innerText = "Download Selected";
 
             selectOption.append(option1);
-            selectOption.append(option0);
+            if(details.user == details.repo.author) {
+                selectOption.append(option0);
+            }
+            
 
             let selected = document.createElement("button");
             selected.innerHTML = `Submit`
