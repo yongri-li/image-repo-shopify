@@ -7,23 +7,20 @@ document.addEventListener('DOMContentLoaded', function () {
     selectOption.setAttribute("class","form-select");
     let option0 = document.createElement("option");
     option0.setAttribute("value","public")
-    option0.innerText = "Public"
+    option0.innerText = "Public Repositories"
     let option1 = document.createElement("option");
     option1.setAttribute("value","private")
-    option1.innerText = "Private"
+    option1.innerText = "My Repositories"
 
     selectOption.append(option0)
     selectOption.append(option1)
+    selectOption.setAttribute("onchange","newRepos()")
     
-
-    let selected = document.createElement("button");
-    selected.setAttribute("class","btn btn-success")
-    selected.innerHTML = `Submit`
-    selected.addEventListener('click', function() {
-        loadRepos(selectOption.value)
-    })
     repoStatic.append(selectOption)
-    repoStatic.append(selected)
+    newRepos = function() {
+        console.log(selectOption.value)
+        loadRepos(selectOption.value)
+    }
     loadRepos("public")
 
 

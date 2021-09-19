@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django import forms
@@ -5,6 +6,7 @@ from django.urls import reverse
 from django.db import IntegrityError
 from django.contrib.auth import authenticate, login, logout
 from .models import User, Image, Repo
+from django.contrib.auth.decorators import login_required
 import os
 # Create your views here.
 
@@ -104,17 +106,18 @@ def edit_image(request,pk):
     else:
        return JsonResponse({"error": "This is not your image"},status=400)
 
-
 def images(request,level):
     
-    if level == "private":
+    if level == "private" and request.user.is_authenticated:
         repos = Repo.objects.filter(
-            author = request.user,private=True
+            author = request.user
         )
     elif level == "public":
         repos = Repo.objects.filter(
             private=False
         )
+    else:
+        return JsonResponse([],safe=False)
     repos = repos.order_by("-timestamp").all()
     ans = []
     for repo in repos:
