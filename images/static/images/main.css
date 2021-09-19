@@ -1,0 +1,17 @@
+.card {display:inline-block; margin:5px;}
+
+.static {
+    margin-bottom:20px;
+}
+
+.form-select {
+    margin:10px;
+}
+
+body {
+    margin: 20px;
+}
+button {
+    margin: 5px;
+}
+

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const repoStatic = document.querySelector('#repo-static')
 
     let selectOption = document.createElement("select");
+    selectOption.setAttribute("class","form-select");
     let option0 = document.createElement("option");
     option0.setAttribute("value","public")
     option0.innerText = "Public"
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
     let selected = document.createElement("button");
+    selected.setAttribute("class","btn btn-success")
     selected.innerHTML = `Submit`
     selected.addEventListener('click', function() {
         loadRepos(selectOption.value)
@@ -38,11 +40,17 @@ loadRepos = function(level) {
         for (let i = 0; i < repos.length; i++) {
 
             let newContent = document.createElement('div');
-            newContent.style.borderStyle = "groove"
-            newContent.style.margin = "10px"
+            //newContent.style.borderStyle = "groove"
+            newContent.setAttribute("class","card")
+            newContent.setAttribute("style","padding:20px;")
+            
+            //newContent.style.margin = "10px"
             let theImage = document.createElement('img');
+            theImage.setAttribute("class","card-img-left")
             let title = document.createElement("h3");
+            title.setAttribute("class","card-title")
             let des = document.createElement("p");
+            des.setAttribute("class","card-text")
 
             title.innerHTML = repos[i].title;
 
@@ -52,11 +60,11 @@ loadRepos = function(level) {
             theImage.setAttribute("alt", repos[i].title);
             theImage.setAttribute("height", "100");
 
-            let label = document.createElement("label");
-            label.setAttribute("for",repos[i].title);
+            //let label = document.createElement("label");
+            //label.setAttribute("for",repos[i].title);
 
 
-            let author = document.createElement("h5");
+            let author = document.createElement("h6");
             author.innerHTML = `by ${repos[i].author} on ${repos[i].timestamp}`
 
             newContent.append(title);
