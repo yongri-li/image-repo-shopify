@@ -4,79 +4,79 @@ document.addEventListener('DOMContentLoaded', function () {
     const repoStatic = document.querySelector('#repo-static')
 
     let selectOption = document.createElement("select");
-    selectOption.setAttribute("class","form-select");
+    selectOption.setAttribute("class", "form-select");
     let option0 = document.createElement("option");
-    option0.setAttribute("value","public")
+    option0.setAttribute("value", "public")
     option0.innerText = "Public Repositories"
     let option1 = document.createElement("option");
-    option1.setAttribute("value","private")
+    option1.setAttribute("value", "private")
     option1.innerText = "My Repositories"
 
     selectOption.append(option0)
     selectOption.append(option1)
-    selectOption.setAttribute("onchange","newRepos()")
-    
+    selectOption.setAttribute("onchange", "newRepos()")
+
     repoStatic.append(selectOption)
-    newRepos = function() {
-        console.log(selectOption.value)
+    newRepos = function () {
+        //console.log(selectOption.value)
         loadRepos(selectOption.value)
     }
     loadRepos("public")
 
 
-    
-    
+
+
 })
 
-loadRepos = function(level) {
+loadRepos = function (level) {
     fetch(`/images/${level}`)
-    .then(response => response.json())
-    .then(repos => {
-        const repoList = document.querySelector('#repo-list')
-        repoList.innerHTML = ""
-        for (let i = 0; i < repos.length; i++) {
+        .then(response => response.json())
+        .then(repos => {
+            const repoList = document.querySelector('#repo-list')
+            repoList.innerHTML = ""
+            for (let i = 0; i < repos.length; i++) {
 
-            let newContent = document.createElement('div');
-            //newContent.style.borderStyle = "groove"
-            newContent.setAttribute("class","card")
-            newContent.setAttribute("style","padding:20px;")
-            
-            //newContent.style.margin = "10px"
-            let theImage = document.createElement('img');
-            theImage.setAttribute("class","card-img-left")
-            let title = document.createElement("h3");
-            title.setAttribute("class","card-title")
-            let des = document.createElement("p");
-            des.setAttribute("class","card-text")
+                let newContent = document.createElement('div');
+                //newContent.style.borderStyle = "groove"
+                newContent.setAttribute("class", "card")
+                newContent.setAttribute("style", "padding:20px;")
 
-            title.innerHTML = repos[i].title;
+                //newContent.style.margin = "10px"
+                let theImage = document.createElement('img');
+                theImage.setAttribute("class", "card-img-left")
+                let title = document.createElement("h3");
+                title.setAttribute("class", "card-title")
+                let des = document.createElement("p");
+                des.setAttribute("class", "card-text")
 
-            des.innerText = repos[i].description;
+                title.innerHTML = repos[i].title;
 
-            theImage.setAttribute("src", repos[i].thumbnail);
-            theImage.setAttribute("alt", repos[i].title);
-            theImage.setAttribute("height", "100");
+                des.innerText = repos[i].description;
 
-            //let label = document.createElement("label");
-            //label.setAttribute("for",repos[i].title);
+                theImage.setAttribute("src", repos[i].thumbnail);
+                theImage.setAttribute("alt", repos[i].title);
+                theImage.setAttribute("height", "100");
 
-
-            let author = document.createElement("h6");
-            author.innerHTML = `by ${repos[i].author} on ${repos[i].timestamp}`
-
-            newContent.append(title);
-            newContent.append(theImage);
-            newContent.append(des);
-            newContent.append(author);
+                //let label = document.createElement("label");
+                //label.setAttribute("for",repos[i].title);
 
 
-            newContent.addEventListener('click', () => {
-                console.log(`YOU JUST CLICKED ${repos[i].title} with the id of ${repos[i].id}`);
-                window.location.href = `/detail/${repos[i].id}`;
-            })
+                let author = document.createElement("h6");
+                author.innerHTML = `by ${repos[i].author} on ${repos[i].timestamp}`
+
+                newContent.append(title);
+                newContent.append(theImage);
+                newContent.append(des);
+                newContent.append(author);
 
 
-            repoList.append(newContent);
-        }
-    })
+                newContent.addEventListener('click', () => {
+                    //console.log(`YOU JUST CLICKED ${repos[i].title} with the id of ${repos[i].id}`);
+                    window.location.href = `/detail/${repos[i].id}`;
+                })
+
+
+                repoList.append(newContent);
+            }
+        })
 }
